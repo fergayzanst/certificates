@@ -2,99 +2,118 @@
 <html lang="ku" dir="rtl" id="htmlTag">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Certification Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certification Portal | وەرگرتنی بڕوانامە</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #2563eb;
-            --success: #16a34a;
-            --bg-glass: rgba(255, 255, 255, 0.95);
+            --emerald: #064e3b; /* Deep Islamic Green */
+            --gold: #d4af37;    /* Classic Gold */
+            --cream: #fdfbf7;
+            --text-dark: #1a2e25;
         }
 
-        /* 1. FLEXIBLE LAYOUT */
         body {
             font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #0f172a;
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background-color: var(--emerald);
         }
 
+        /* 1. ISLAMIC PATTERN BACKGROUND */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('background.jpg'); 
+            background-image: url('background.jpg'); /* Your primary BG */
             background-size: cover; background-position: center;
-            filter: blur(12px); -webkit-filter: blur(12px);
-            background-color: rgba(15, 23, 42, 0.5); background-blend-mode: multiply;
+            filter: blur(8px) brightness(0.4);
             transform: scale(1.1); z-index: -1;
         }
 
-        /* 2. RESPONSIVE CONTAINER */
+        /* Overlaying a geometric pattern layer */
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png'); /* Subtle geometric pattern */
+            opacity: 0.15; z-index: -1;
+        }
+
+        /* 2. THE CARD DESIGN */
         .main-container {
-            background: var(--bg-glass);
-            padding: 2rem;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            width: 95%; /* Responsive width */
-            max-width: 420px; /* Limits size on desktop */
-            box-sizing: border-box;
+            background: var(--cream);
+            padding: 40px;
+            border-radius: 0px; /* Classic sharp edges or very slight rounding */
+            border: 3px solid var(--gold);
+            outline: 10px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
             position: relative;
-            margin: 20px;
+            box-sizing: border-box;
         }
 
-        /* Language Toggle - Mobile Friendly */
         .lang-switch {
-            position: absolute; top: 1rem; left: 1rem;
-            background: #f1f5f9; padding: 6px 16px; border-radius: 50px;
-            cursor: pointer; font-size: 13px; font-weight: 700; border: 1px solid #e2e8f0;
+            position: absolute; top: 15px; left: 15px;
+            background: var(--emerald); color: var(--gold);
+            padding: 5px 15px; border: 1px solid var(--gold);
+            cursor: pointer; font-size: 12px; font-weight: bold;
         }
-        [dir="ltr"] .lang-switch { left: auto; right: 1rem; }
+        [dir="ltr"] .lang-switch { left: auto; right: 15px; }
 
-        h1 { color: #1e293b; font-size: 1.5rem; margin: 1.5rem 0 0.5rem; font-weight: 700; }
-        .subtitle { color: #64748b; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.5; }
+        /* 3. TYPOGRAPHY */
+        h1 { 
+            font-family: 'Amiri', serif; /* Traditional Arabic font style */
+            color: var(--emerald); 
+            font-size: 32px; 
+            margin: 10px 0;
+            border-bottom: 2px solid var(--gold);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        
+        .subtitle { 
+            color: var(--text-dark); 
+            font-size: 16px; 
+            margin-bottom: 30px; 
+            line-height: 1.6;
+            font-style: italic;
+        }
 
-        /* 3. ADAPTIVE INPUTS */
+        /* 4. FORM ELEMENTS */
         input {
-            width: 100%; padding: 1rem; border: 2px solid #f1f5f9; border-radius: 14px;
-            font-size: 1.1rem; box-sizing: border-box; text-align: center;
-            direction: ltr; background: #f8fafc; transition: 0.2s;
-            -webkit-appearance: none; /* Fixes mobile styling */
+            width: 100%; padding: 16px; border: 1px solid #ccc;
+            background: #fff; font-size: 18px; box-sizing: border-box;
+            text-align: center; direction: ltr; margin-bottom: 20px;
         }
-        input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+        input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
 
         .btn {
-            width: 100%; padding: 1rem; border-radius: 14px; border: none;
-            font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.2s;
-            display: inline-block; box-sizing: border-box;
+            width: 100%; padding: 16px; font-size: 16px; font-weight: bold;
+            cursor: pointer; transition: 0.3s; border: none; text-transform: uppercase;
         }
-        .btn-primary { background: var(--primary); color: white; margin-top: 1rem; }
-        .btn-success { background: var(--success); color: white; margin-top: 1rem; text-decoration: none; }
+        
+        .btn-primary { 
+            background: var(--emerald); color: var(--gold); 
+            border: 1px solid var(--gold);
+        }
+        .btn-primary:hover { background: #043a2c; color: #fff; }
 
-        /* 4. FLEXIBLE IMAGE RESULT */
-        #result { margin-top: 2rem; display: none; border-top: 1px solid #f1f5f9; padding-top: 1.5rem; }
+        .btn-success { 
+            background: var(--gold); color: var(--emerald); 
+            margin-top: 20px;
+        }
+
+        /* 5. RESULTS */
+        #result { margin-top: 30px; display: none; animation: fadeIn 0.8s; }
         #certPreview { 
-            width: 100%; /* Scales to container width */
-            height: auto; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1); 
-            margin-bottom: 1rem;
+            width: 100%; border: 5px solid white; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+            margin-bottom: 15px;
         }
 
-        /* 5. TABLET & PHONE ADJUSTMENTS (MEDIA QUERIES) */
-        @media (max-width: 480px) {
-            .main-container { padding: 1.5rem; }
-            h1 { font-size: 1.3rem; }
-            .subtitle { font-size: 0.85rem; }
-            input { font-size: 1rem; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -104,28 +123,29 @@
     
     <div id="text-ku">
         <h1>وەرگرتنی بڕوانامە</h1>
-        <p class="subtitle">تکایە ژمارەی مۆبایلەکەت بنووسە بۆ داگرتنی بڕوانامە.</p>
+        <p class="subtitle">بەخێربێن بۆ وەرگرتنی بڕوانامە فەرمییەکانتان</p>
     </div>
 
     <div id="text-en" style="display: none;">
         <h1>Certification Portal</h1>
-        <p class="subtitle">Please enter your phone number to download your certificate.</p>
+        <p class="subtitle">Welcome to your official course certification portal</p>
     </div>
 
     <input type="text" id="phoneInput" placeholder="07XX XXX XXXX">
-    <button class="btn btn-primary" onclick="checkCertificate()" id="searchBtn">Search • گەڕان</button>
+    
+    <button class="btn btn-primary" onclick="checkCertificate()" id="searchBtn">گەڕان • Search</button>
 
     <div id="result">
-        <img id="certPreview" src="" alt="Preview">
+        <img id="certPreview" src="" alt="Certificate">
         <a id="downloadBtn" href="" download>
-            <button class="btn btn-success">Download • دابەزاندن</button>
+            <button class="btn btn-success">داگرتن • Download (JPG)</button>
         </a>
     </div>
 </div>
 
 <script>
-    // Logic remains consistent to ensure reliability
     let currentLang = 'ku';
+    // Mapping for your 15 participants
     const certificateMap = {
         "7719629570": "1", "44 774 507 1656": "2", "7501585449": "3",
         "7728577165": "4", "7501074835": "5", "7728609703": "6",
@@ -163,7 +183,7 @@
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             };
         } else {
-            alert(currentLang === 'ku' ? "نەدۆزرایەوە" : "Not found");
+            alert(currentLang === 'ku' ? "بڕوانامەکە نەدۆزرایەوە" : "Certificate not found");
         }
     }
 </script>
