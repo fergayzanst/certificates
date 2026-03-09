@@ -11,118 +11,132 @@
 
     <style>
         :root {
-            --mint-light: #f0fdf4; /* Very light mint */
-            --sage-medium: #15803d; /* Sage green for text/accents */
-            --gold-soft: #c5a059;   /* Champagne gold */
-            --white-pure: #ffffff;
+            --bg-page: #0f172a;
+            --bg-card: #1e293b;
+            --text-title: #4ade80; 
+            --text-body: #94a3b8;
+            --text-input: #f1f5f9;
+            --input-fill: #0f172a;
+            --gold: #d4af37;
+            --border-color: #334155;
+            --shadow: rgba(0,0,0,0.4);
+        }
+
+        [data-theme="light"] {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-title: #15803d; 
+            --text-body: #64748b;
+            --text-input: #1e293b;
+            --input-fill: #f8fafc;
+            --gold: #c5a059;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0,0,0,0.12);
         }
 
         body {
             font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
             margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
-            background-color: #f8fafc;
+            background-color: var(--bg-page);
+            transition: background-color 0.4s ease;
+            overflow-x: hidden;
         }
 
-        /* 1. LIGHTER PATTERNED BACKGROUND */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('background.jpg'); 
             background-size: cover; background-position: center;
-            filter: blur(10px) opacity(0.5); /* Much lighter blur */
-            transform: scale(1.1); z-index: -1;
+            filter: blur(8px); transform: scale(1.1); z-index: -1; opacity: 0.3;
         }
 
-        body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/p6-polka.png'); /* Subtle texture */
-            opacity: 0.05; z-index: -1;
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed; top: 20px; right: 20px;
+            display: flex; gap: 10px; z-index: 100;
         }
+        [dir="ltr"] .top-nav { right: auto; left: 20px; flex-direction: row-reverse; }
 
-        /* 2. THE CARD DESIGN */
+        .nav-btn {
+            background: var(--bg-card); color: var(--text-title);
+            border: 2px solid var(--gold); border-radius: 50px;
+            padding: 10px 20px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 4px 10px var(--shadow); transition: 0.3s;
+            font-size: 14px; display: flex; align-items: center; gap: 8px;
+        }
+        .nav-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* BOTTOM CONTACT - UPDATED TELEGRAM LINK STYLING */
+        .contact-bottom {
+            position: fixed; bottom: 30px; left: 50%;
+            transform: translateX(-50%); z-index: 100;
+            background: var(--bg-card); color: var(--gold);
+            border: 2px solid var(--gold); border-radius: 50px;
+            padding: 12px 30px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 4px 15px var(--shadow); transition: 0.3s;
+            text-decoration: none; font-size: 15px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .contact-bottom:hover { background: var(--gold); color: white; transform: translateX(-50%) translateY(-3px); }
+
         .main-container {
-            background: var(--white-pure);
-            padding: 120px 60px;
-            border-radius: 20px; 
-            border: 2px solid var(--gold-soft);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            text-align: center;
-            width: 90%;
-            max-width: 420px;
-            position: relative;
-            box-sizing: border-box;
+            background: var(--bg-card); padding: 60px 40px; border-radius: 24px; 
+            border: 2px solid var(--gold); box-shadow: 0 30px 60px var(--shadow);
+            text-align: center; width: 95%; max-width: 1000px; position: relative;
+            margin-bottom: 80px; box-sizing: border-box;
         }
 
-        .lang-switch {
-            position: absolute; top: 12px; left: 12px;
-            background: var(--mint-light); color: var(--sage-medium);
-            padding: 4px 12px; border: 1px solid var(--sage-medium);
-            border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: bold;
-        }
-        [dir="ltr"] .lang-switch { left: auto; right: 12px; }
+        h1 { font-family: 'Amiri', serif; color: var(--text-title); font-size: 28px; margin: 20px 0 10px; }
+        .subtitle { color: var(--text-body); font-size: 18px; margin-bottom: 35px; }
 
-        /* 3. TYPOGRAPHY */
-        h1 { 
-            font-family: 'Amiri', serif;
-            color: var(--sage-medium); 
-            font-size: 25px; 
-            margin: 15px 0 5px;
-        }
-        
-        .subtitle { 
-            color: #64748b; 
-            font-size: 16px; 
-            margin-bottom: 25px; 
-            line-height: 1.5;
-        }
-
-        /* 4. FORM ELEMENTS */
+        /* CENTERED SEARCH BOX */
         .input-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 14px;
-            width: 100%;
-            font-size: 18px;
-            text-align: center;
-            direction: ltr;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            color: #1e293b;
+            background: var(--input-fill); 
+            border: 1px solid var(--border-color);
+            border-radius: 12px; 
+            padding: 18px; 
+            width: 100%; 
+            font-size: 20px; 
+            text-align: center; 
+            direction: ltr; 
+            margin: 0 auto 20px auto; 
+            box-sizing: border-box; 
+            color: var(--text-input);
+            display: block;
         }
-        .input-box:focus { outline: none; border-color: var(--gold-soft); background: white; }
+        .input-box:focus { outline: none; border-color: var(--gold); }
 
-        .btn {
-            width: 100%; padding: 14px; font-size: 16px; font-weight: bold;
-            cursor: pointer; transition: 0.2s; border-radius: 10px; border: none;
+        .btn-main { 
+            width: 100%; padding: 18px; font-size: 18px; font-weight: bold; 
+            cursor: pointer; border-radius: 12px; border: none; transition: 0.3s;
+            background: var(--text-title); color: #0f172a;
         }
-        
-        .btn-primary { 
-            background: var(--sage-medium); color: white; 
-        }
-        .btn-primary:hover { background: #166534; transform: translateY(-1px); }
+        [data-theme="light"] .btn-main { color: white; }
+        .btn-main:hover { opacity: 0.9; }
 
-        .btn-success { 
-            background: var(--gold-soft); color: white; 
-            margin-top: 15px; text-decoration: none; display: block;
-        }
+        .btn-download { background: var(--gold); color: white; margin-top: 20px; width: 100%; display: block; text-decoration: none; padding: 18px; border-radius: 12px; font-weight: bold; }
 
-        /* 5. RESULTS */
-        #result { margin-top: 25px; display: none; border-top: 1px solid #f1f5f9; padding-top: 20px; }
-        #certPreview { 
-            width: 100%; border-radius: 8px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-            margin-bottom: 15px;
+        #result { margin-top: 35px; display: none; border-top: 1px solid var(--border-color); padding-top: 30px; }
+        #certPreview { width: 100%; border-radius: 12px; box-shadow: 0 10px 25px var(--shadow); margin-bottom: 20px; border: 5px solid white; }
+
+        @media (max-width: 600px) {
+            .top-nav { width: calc(100% - 40px); justify-content: space-between; }
+            .nav-btn { padding: 8px 12px; font-size: 11px; }
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
+
+<div class="top-nav">
+    <button class="nav-btn" onclick="toggleLanguage()" id="langBtn">🌐 English</button>
+    <button class="nav-btn" onclick="toggleTheme()" id="themeBtn">☀️ شێوازی ڕووناک</button>
+</div>
+
+<a href="https://t.me/Fergayzanist" target="_blank" class="contact-bottom" id="contactBtn">✈️ پەیوەندی • Contact</a>
 
 <div class="main-container">
-    <div class="lang-switch" onclick="toggleLanguage()" id="langBtn">English</div>
-    
     <div id="text-ku">
-        <h1>وەرگرتنی بڕوانامە</h1>
-        <p class="subtitle">بەخێربێن، تکایە ژمارەی مۆبایلەکەت بنووسە بۆ داگرتنی بڕوانامە.</p>
+        <h1>وەرگرتنی بڕوانامەی خولی ڕاهێنانی مامۆستایانی قورئان و پەروەردەی ئیسلامی</h1>
+        <p class="subtitle">تکایە ژمارەی مۆبایلەکەت بنووسە بۆ داگرتنی بڕوانامە.</p>
     </div>
 
     <div id="text-en" style="display: none;">
@@ -130,16 +144,13 @@
         <p class="subtitle">Welcome, please enter your phone number to download your certificate.</p>
     </div>
 
-    <input type="text" class="input-box" id="phoneInput" placeholder="07XX XXX XXXX">
-    
-    <button class="btn btn-primary" onclick="checkCertificate()" id="searchBtn">گەڕان • Search</button>
+    <input type="text" class="input-box" id="phoneInput" placeholder="7XX XXX XXXX">
+    <button class="btn-main" onclick="checkCertificate()" id="searchBtn">گەڕان • Search</button>
 
     <div id="result">
-        <p style="color: var(--sage-medium); font-weight: bold; font-size: 14px; margin-bottom: 10px;">بڕوانامەکەت دۆزرایەوە / Found!</p>
+        <p style="color: var(--text-title); font-weight: bold; font-size: 16px; margin-bottom: 15px;">بڕوانامەکەت دۆزرایەوە / Found!</p>
         <img id="certPreview" src="" alt="Certificate">
-        <a id="downloadBtn" href="" download>
-            <button class="btn btn-success">داگرتن • Download</button>
-        </a>
+        <a id="downloadBtn" href="" download class="btn-download">داگرتن • Download</a>
     </div>
 </div>
 
@@ -153,15 +164,39 @@
         "7701985499": "13", "7504739732": "14", "7804792174": "15"
     };
 
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeBtn');
+        const isDark = body.getAttribute('data-theme') === 'dark';
+
+        if (isDark) {
+            body.setAttribute('data-theme', 'light');
+            btn.innerHTML = (currentLang === 'ku') ? "🌙 شێوازی تاریک" : "🌙 Dark Mode";
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerHTML = (currentLang === 'ku') ? "☀️ شێوازی ڕووناک" : "☀️ Light Mode";
+        }
+    }
+
     function toggleLanguage() {
         const h = document.getElementById('htmlTag');
         const k = document.getElementById('text-ku');
         const e = document.getElementById('text-en');
-        const b = document.getElementById('langBtn');
+        const lBtn = document.getElementById('langBtn');
+        const tBtn = document.getElementById('themeBtn');
+        const cBtn = document.getElementById('contactBtn');
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+
         if (currentLang === 'ku') {
-            h.setAttribute('dir', 'ltr'); k.style.display = 'none'; e.style.display = 'block'; b.innerText = 'کوردی'; currentLang = 'en';
+            h.setAttribute('dir', 'ltr'); k.style.display = 'none'; e.style.display = 'block'; 
+            lBtn.innerText = '🌐 کوردی'; currentLang = 'en';
+            tBtn.innerHTML = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+            cBtn.innerHTML = "✈️ Contact";
         } else {
-            h.setAttribute('dir', 'rtl'); k.style.display = 'block'; e.style.display = 'none'; b.innerText = 'English'; currentLang = 'ku';
+            h.setAttribute('dir', 'rtl'); k.style.display = 'block'; e.style.display = 'none'; 
+            lBtn.innerText = '🌐 English'; currentLang = 'ku';
+            tBtn.innerHTML = isDark ? "☀️ شێوازی ڕووناک" : "🌙 شێوازی تاریک";
+            cBtn.innerHTML = "✈️ پەیوەندی • Contact";
         }
     }
 
@@ -188,6 +223,3 @@
 </script>
 </body>
 </html>
-
-
-
