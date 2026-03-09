@@ -35,7 +35,7 @@
         }
 
         body {
-            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+            font-family: 'Inter', 'IBM Plex Sans Arabic Text', Doran;
             margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
             background-color: var(--bg-page);
             transition: background-color 0.4s ease;
@@ -65,7 +65,6 @@
         }
         .nav-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-        /* BOTTOM CONTACT - UPDATED TELEGRAM LINK STYLING */
         .contact-bottom {
             position: fixed; bottom: 30px; left: 50%;
             transform: translateX(-50%); z-index: 100;
@@ -85,10 +84,9 @@
             margin-bottom: 80px; box-sizing: border-box;
         }
 
-        h1 { font-family: 'Doran Medium', IBM Plex Sans Arabic Text; color: var(--text-title); font-size: 28px; margin: 20px 0 10px; }
+        h1 { font-family: 'Doran NoEn', serif; color: var(--text-title); font-size: 28px; margin: 20px 0 10px; }
         .subtitle { color: var(--text-body); font-size: 18px; margin-bottom: 35px; }
 
-        /* CENTERED SEARCH BOX */
         .input-box {
             background: var(--input-fill); 
             border: 1px solid var(--border-color);
@@ -109,14 +107,55 @@
             width: 100%; padding: 18px; font-size: 18px; font-weight: bold; 
             cursor: pointer; border-radius: 12px; border: none; transition: 0.3s;
             background: var(--text-title); color: #0f172a;
+            display: flex; align-items: center; justify-content: center;
         }
         [data-theme="light"] .btn-main { color: white; }
         .btn-main:hover { opacity: 0.9; }
+        .btn-main:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .btn-download { background: var(--gold); color: white; margin-top: 20px; width: 100%; display: block; text-decoration: none; padding: 18px; border-radius: 12px; font-weight: bold; }
+        /* SMOOTH TRANSITION ANIMATIONS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        #result { margin-top: 35px; display: none; border-top: 1px solid var(--border-color); padding-top: 30px; }
-        #certPreview { width: 100%; border-radius: 12px; box-shadow: 0 10px 25px var(--shadow); margin-bottom: 20px; border: 5px solid white; }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            width: 20px; height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+        }
+
+        #result { 
+            margin-top: 35px; 
+            display: none; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 30px;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        #certPreview { 
+            width: 100%; max-width: 100%; height: auto;
+            border-radius: 12px; box-shadow: 0 10px 25px var(--shadow); 
+            margin: 0 auto 20px auto; border: 5px solid white; 
+            display: block; box-sizing: border-box;
+        }
+
+        .btn-download { 
+            background: var(--gold); color: white; margin: 20px auto 0 auto; 
+            width: 100%; display: block; text-decoration: none; padding: 18px; 
+            border-radius: 12px; font-weight: bold; box-sizing: border-box;
+            text-align: center; transition: 0.3s;
+        }
+        .btn-download:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
         @media (max-width: 600px) {
             .top-nav { width: calc(100% - 40px); justify-content: space-between; }
@@ -168,7 +207,6 @@
         const body = document.body;
         const btn = document.getElementById('themeBtn');
         const isDark = body.getAttribute('data-theme') === 'dark';
-
         if (isDark) {
             body.setAttribute('data-theme', 'light');
             btn.innerHTML = (currentLang === 'ku') ? "🌙 شێوازی تاریک" : "🌙 Dark Mode";
@@ -201,27 +239,56 @@
     }
 
     function checkCertificate() {
-        let inputRaw = document.getElementById('phoneInput').value.trim();
-        let inputClean = inputRaw.replace(/[\s\-\(\)]/g, ""); 
-        let foundSerial = null;
-        for (let phone in certificateMap) {
-            if (phone.replace(/[\s\-\(\)]/g, "") === inputClean) { foundSerial = certificateMap[phone]; break; }
+        const btn = document.getElementById('searchBtn');
+        const result = document.getElementById('result');
+        const inputRaw = document.getElementById('phoneInput').value.trim();
+        const inputClean = inputRaw.replace(/[\s\-\(\)]/g, ""); 
+        
+        // Hide previous result
+        result.style.display = "none";
+        
+        if (inputClean === "") {
+            alert(currentLang === 'ku' ? "تکایە ژمارەیەک بنووسە" : "Please enter a number");
+            return;
         }
-        if (foundSerial) {
-            const fileName = "certs/" + foundSerial + ".jpg";
-            const img = document.getElementById('certPreview');
-            img.src = fileName;
-            img.onload = function() {
-                document.getElementById('downloadBtn').href = fileName;
-                document.getElementById('result').style.display = "block";
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            };
-        } else {
-            alert(currentLang === 'ku' ? "بڕوانامەکە نەدۆزرایەوە" : "Certificate not found");
-        }
+
+        // START LOADING STATE
+        const originalContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span> ${currentLang === 'ku' ? 'چاوەڕوانبە...' : 'Searching...'}`;
+
+        // Intentional delay for a smoother "searching" feel
+        setTimeout(() => {
+            let foundSerial = null;
+            for (let phone in certificateMap) {
+                if (phone.replace(/[\s\-\(\)]/g, "") === inputClean) { 
+                    foundSerial = certificateMap[phone]; 
+                    break; 
+                }
+            }
+
+            if (foundSerial) {
+                const fileName = "certs/" + foundSerial + ".jpg";
+                const img = document.getElementById('certPreview');
+                img.src = fileName;
+                
+                img.onload = function() {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                    result.style.display = "block";
+                    
+                    // Smooth scroll to result
+                    setTimeout(() => {
+                        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                };
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+                alert(currentLang === 'ku' ? "بڕوانامەکە نەدۆزرایەوە" : "Certificate not found");
+            }
+        }, 700);
     }
 </script>
 </body>
 </html>
-
-
